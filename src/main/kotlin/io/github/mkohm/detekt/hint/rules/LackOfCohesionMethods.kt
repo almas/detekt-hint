@@ -227,7 +227,7 @@ class LackOfCohesionMethods(config: Config = Config.empty) : Rule(config) {
         for (reachableExpression in reachableExpressionsFromThisExpressions) {
 
             // Memoize the results of the calculation to speed things up
-            var newResult = listOf<KtExpression>()
+            var newResult: List<KtExpression>
             if (memoizedResults.containsKey(reachableExpression)) {
 
                 // After each call we put the result into the map, we therefore know that the key exists.

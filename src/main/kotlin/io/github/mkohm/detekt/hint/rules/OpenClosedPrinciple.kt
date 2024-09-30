@@ -74,7 +74,7 @@ class OpenClosedPrinciple(config: Config = Config.empty) : Rule(config) {
         )
     }
 
-    private fun getClassNames(expression: KtWhenExpression): String? {
+    private fun getClassNames(expression: KtWhenExpression): String {
         val allClasses =
             expression.collectDescendantsOfType<KtIsExpression>().map { it.typeReference } +
                 expression.collectDescendantsOfType<KtWhenConditionIsPattern>().map { it.typeReference }
