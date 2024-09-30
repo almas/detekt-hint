@@ -209,6 +209,8 @@ class LackOfCohesionMethods(config: Config = Config.empty) : Rule(config) {
                         (it.getResolvedCall(bindingContext)?.resultingDescriptor?.findPsi() as KtNamedFunction).bodyExpression
                     } catch (e: java.lang.ClassCastException) {
                         null
+                    } catch (e: java.lang.NullPointerException) {
+                        null
                     }
                 }.filter {
                     !foundExpressions.contains(it) && isCalleeInPropertyClass(
