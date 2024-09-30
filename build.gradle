@@ -25,9 +25,9 @@ dependencies {
 
     testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.10.0"
     testRuntimeOnly "org.spekframework.spek2:spek-runner-junit5:2.0.19"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.10"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20"
     detektPlugins "io.github.mkohm:detekt-hint:0.1.5"
-    runtimeOnly 'org.jetbrains.dokka:jekyll-plugin:1.9.20'
+    runtimeOnly "org.jetbrains.dokka:jekyll-plugin:1.9.20"
 }
 compileKotlin {
     kotlinOptions {
@@ -46,22 +46,19 @@ java {
 }
 
 detekt {
-    config = files("$projectDir/config/detekt.yml")
+    config.setFrom("$projectDir/config/detekt.yml")
+}
+
+tasks.named("detekt").configure {
     reports {
-        html {
-            required = true
-            outputLocation = file("build/reports/detekt/detekt.html")
-        }
+        html.required.set(true)
+        html.outputLocation.set(file("build/reports/detekt/detekt-checkstyle.xml"))
 
-        xml {
-            required = true
-            outputLocation = file("build/reports/detekt/detekt-checkstyle.xml")
-        }
+        xml.required.set(true)
+        xml.outputLocation.set(file("build/reports/detekt/detekt-checkstyle.xml"))
 
-        txt {
-            required = true
-            outputLocation = file("build/reports/detekt/detekt.txt")
-        }
+        txt.required.set(true)
+        txt.outputLocation.set(file("build/reports/detekt/detekt-checkstyle.xml"))
     }
 }
 
