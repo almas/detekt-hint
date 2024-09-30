@@ -1,33 +1,33 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.3.61"
-    id("io.gitlab.arturbosch.detekt").version("1.5.0")
-    id "com.vanniktech.maven.publish" version "0.8.0"
+    id "org.jetbrains.kotlin.jvm" version "1.9.20"
+    id "io.gitlab.arturbosch.detekt" version "1.23.7"
+    id "com.vanniktech.maven.publish" version "0.29.0"
     id "jacoco"
+    id "org.jetbrains.dokka" version "1.9.20"
 }
 
 repositories {
-    jcenter()
     mavenCentral()
 }
 
 dependencies {
     // When creating a sample extension, change this dependency to the detekt-api version you build against
     // e.g. io.gitlab.arturbosch.detekt:detekt-api:1.x.x
-    implementation("io.gitlab.arturbosch.detekt:detekt-api:1.5.0")
+    implementation "io.gitlab.arturbosch.detekt:detekt-api:1.23.7"
     // When creating a sample extension, change this dependency to the detekt-test version you build against
     // e.g. io.gitlab.arturbosch.detekt:detekt-test:1.x.x
-    testImplementation("io.gitlab.arturbosch.detekt:detekt-test:1.5.0")
+    testImplementation "io.gitlab.arturbosch.detekt:detekt-test:1.23.7"
     // Do you want to write integration or system tests? Add the cli dependency.
-    testImplementation("io.gitlab.arturbosch.detekt:detekt-cli:1.5.0")
+    testImplementation "io.gitlab.arturbosch.detekt:detekt-cli:1.23.7"
 
-    testImplementation("org.assertj:assertj-core:3.14.0")
-    testImplementation("org.spekframework.spek2:spek-dsl-jvm:2.0.9")
+    testImplementation "org.assertj:assertj-core:3.26.3"
+    testImplementation "org.spekframework.spek2:spek-dsl-jvm:2.0.19"
 
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.5.2")
-    testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:2.0.9")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    detektPlugins "io.github.mkohm:detekt-hint:0.1.4"
-
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.10.0"
+    testRuntimeOnly "org.spekframework.spek2:spek-runner-junit5:2.0.19"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.10"
+    detektPlugins "io.github.mkohm:detekt-hint:0.1.5"
+    runtimeOnly 'org.jetbrains.dokka:jekyll-plugin:1.9.20'
 }
 compileKotlin {
     kotlinOptions {
@@ -40,22 +40,27 @@ compileTestKotlin {
     }
 }
 
+java {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+}
+
 detekt {
     config = files("$projectDir/config/detekt.yml")
     reports {
         html {
-            enabled = true
-            destination = file("build/reports/detekt/detekt.html")
+            required = true
+            outputLocation = file("build/reports/detekt/detekt.html")
         }
 
         xml {
-            enabled = true
-            destination = file("build/reports/detekt/detekt-checkstyle.xml")
+            required = true
+            outputLocation = file("build/reports/detekt/detekt-checkstyle.xml")
         }
 
         txt {
-            enabled = true
-            destination = file("build/reports/detekt/detekt.txt")
+            required = true
+            outputLocation = file("build/reports/detekt/detekt.txt")
         }
     }
 }
@@ -66,13 +71,16 @@ test {
 
 jacocoTestReport {
     reports {
-        xml.enabled true
-        html.enabled false
+        xml.required = true
+        html.required = false
     }
 }
 
-// A new dokka task for generating github flavoured markdown to the docs directory
-task customDokkaTask(type: org.jetbrains.dokka.gradle.DokkaTask) {
-    outputFormat = "jekyll"
-    outputDirectory = "$projectDir/docs"
+tasks.dokkaJekyll {
+    dokkaSourceSets {
+        configureEach {
+            outputDirectory.set(file("$projectDir/docs"))
+            // other configurations
+        }
+    }
 }

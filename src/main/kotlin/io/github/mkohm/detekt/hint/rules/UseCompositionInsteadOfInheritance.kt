@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.psi.stubs.elements.KtStubElementTypes.SUPER_TYPE_CAL
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.calls.callUtil.getResolvedCall
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
+import org.jetbrains.kotlin.utils.IDEAPluginsCompatibilityAPI
 
 /**
  * A rule suggesting the use of composition instead of inheritance. It will help you test for Liskov Substitution.
@@ -37,6 +38,7 @@ class UseCompositionInsteadOfInheritance(config: Config = Config.empty) : Rule(c
         Debt.TWENTY_MINS
     )
 
+    @OptIn(IDEAPluginsCompatibilityAPI::class)
     override fun visitClass(klass: KtClass) {
         super.visitClass(klass)
         if (bindingContext == BindingContext.EMPTY) return

@@ -22,6 +22,7 @@ import org.jetbrains.kotlin.psi.psiUtil.isProtected
 import org.jetbrains.kotlin.psi.psiUtil.isPublic
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.calls.callUtil.getResolvedCall
+import org.jetbrains.kotlin.utils.IDEAPluginsCompatibilityAPI
 
 /**
  * A rule that notifies if there is too much lack of cohesion. Remember to configure it correctly in the detekt.yml.
@@ -178,6 +179,7 @@ class LackOfCohesionMethods(config: Config = Config.empty) : Rule(config) {
     /**
      * We need to ensure that the found reference not only have the same name as the property, but if it is a member of the correct class as well.
      */
+    @OptIn(IDEAPluginsCompatibilityAPI::class)
     private fun isReferenceOfPropertyClass(
         reference: KtReferenceExpression,
         expression: KtExpression
@@ -194,6 +196,7 @@ class LackOfCohesionMethods(config: Config = Config.empty) : Rule(config) {
     * From public, protected, initializer methods etc. Calls to private methods can exist.
     * We need to find all such calls and look for references there as well.
     */
+    @OptIn(IDEAPluginsCompatibilityAPI::class)
     private fun getReachableExpressions(
         property: KtNamedDeclaration,
         expression: KtExpression,

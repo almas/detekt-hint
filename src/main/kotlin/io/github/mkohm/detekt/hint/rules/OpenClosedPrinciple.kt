@@ -15,6 +15,7 @@ import org.jetbrains.kotlin.psi.psiUtil.collectDescendantsOfType
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 import org.jetbrains.kotlin.types.typeUtil.isEnum
+import org.jetbrains.kotlin.utils.IDEAPluginsCompatibilityAPI
 
 /**
  * Open closed principle rule. Only supports catching the easiest cases. Not complex when expressions, with type checking and use of enums.
@@ -80,6 +81,7 @@ class OpenClosedPrinciple(config: Config = Config.empty) : Rule(config) {
         return allClasses.map { "`${it?.text}`" }.reduceRight { ktTypeReference, acc -> "$acc, $ktTypeReference" }
     }
 
+    @OptIn(IDEAPluginsCompatibilityAPI::class)
     private fun getEnumName(expression: KtWhenExpression): String = expression.subjectExpression?.getType(bindingContext).toString()
 
     private fun isTypeCheckWhenExpression(expression: KtWhenExpression): Boolean = entriesContainsIsExpression(expression)
@@ -94,5 +96,6 @@ class OpenClosedPrinciple(config: Config = Config.empty) : Rule(config) {
 
     private fun isEnumWhenExpression(expression: KtWhenExpression): Boolean = subjectExpressionIsEnum(expression)
 
+    @OptIn(IDEAPluginsCompatibilityAPI::class)
     private fun subjectExpressionIsEnum(expression: KtWhenExpression): Boolean = expression.subjectExpression?.getType(bindingContext)?.isEnum() ?: false
 }
