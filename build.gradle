@@ -52,13 +52,13 @@ detekt {
 tasks.named("detekt").configure {
     reports {
         html.required.set(true)
-        html.outputLocation.set(file("build/reports/detekt/detekt-checkstyle.xml"))
+        html.outputLocation.set(file("build/reports/detekt/detekt-hint.html"))
 
         xml.required.set(true)
-        xml.outputLocation.set(file("build/reports/detekt/detekt-checkstyle.xml"))
+        xml.outputLocation.set(file("build/reports/detekt/detekt-hint.xml"))
 
         txt.required.set(true)
-        txt.outputLocation.set(file("build/reports/detekt/detekt-checkstyle.xml"))
+        txt.outputLocation.set(file("build/reports/detekt/detekt-hint.txt"))
     }
 }
 
