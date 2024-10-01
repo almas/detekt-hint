@@ -1,6 +1,4 @@
-# detekt-hint (clone)
-
-(Cloned from Github)
+# detekt-hint (Attention: Looking for developers)
 
 Detection of design principle violations in Kotlin added as comments on pull requests.
 
